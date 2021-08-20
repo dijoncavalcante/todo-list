@@ -10,4 +10,5 @@
     <string name="edit_label">Edit</string>
     <string name="delete_label">Deletar</string>
     <string name="you_dont_have_tasks">Ops!! Você não possui\n nenhuma tarefa.</string>
+    <string name="descricao_label">Descrição</string>
 </resources>
