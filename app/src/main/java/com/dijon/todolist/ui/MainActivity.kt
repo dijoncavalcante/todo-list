@@ -1,59 +1,81 @@
 package com.dijon.todolist.ui
 
-import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import com.dijon.todolist.MainViewModel
 import com.dijon.todolist.databinding.ActivityMainBinding
-import com.dijon.todolist.datasource.TaskDataSource
+import com.dijon.todolist.model.data.Task
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
+    private val mainViewModel: MainViewModel by viewModel()
     private lateinit var binding: ActivityMainBinding
-    private val adapterTaskListAdapter by lazy { TaskListAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        binding.rvTasks.adapter = adapterTaskListAdapter
-        updateList()
-        insertListeners()
+        initObserver()
+        setListeners()
     }
 
-    private fun insertListeners() {
+    private fun initObserver() {
+        mainViewModel.allTasks.observe(this, { tasks ->
+            if (tasks.isNotEmpty()) {
+                populateList(tasks)
+                loadingVisibility(false)
+            }
+        })
+    }
+
+    private fun populateList(tasks: List<Task>) {
+        binding.rvTasks.apply {
+            hasFixedSize()
+            adapter = TaskAdapter(tasks)
+        }
+    }
+
+    private fun loadingVisibility(isLoading: Boolean) {
+        binding.includeEmpty.emptyState.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+
+    private fun setListeners() {
         binding.fabAddTask.setOnClickListener {
-            startActivityForResult(Intent(this, AddTaskActivity::class.java), CREATE_NEW_TASK)
-        }
-
-        adapterTaskListAdapter.listenerEdit = {
-            val intent = Intent(this, AddTaskActivity::class.java)
-            intent.putExtra(AddTaskActivity.TASK_ID, it.id)
-            startActivityForResult(intent, CREATE_NEW_TASK)
-        }
-        adapterTaskListAdapter.listenerDelete = {
-            TaskDataSource.deleteTask(it)
-            updateList()
+            startActivity(Intent(this@MainActivity, AddTaskActivity::class.java))
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == CREATE_NEW_TASK && resultCode == Activity.RESULT_OK) updateList()
-    }
+//    private fun insertListeners() {
+//        binding.fabAddTask.setOnClickListener {
+//            startActivityForResult(Intent(this, AddTaskActivity::class.java), CREATE_NEW_TASK)
+//        }
+//
+//        adapterTaskListAdapter.listenerEdit = {
+//            val intent = Intent(this, AddTaskActivity::class.java)
+//            intent.putExtra(AddTaskActivity.TASK_ID, it.id)
+//            startActivityForResult(intent, CREATE_NEW_TASK)
+//        }
+//        adapterTaskListAdapter.listenerDelete = {
+//            TaskDataSource.deleteTask(it)
+//            updateList()
+//        }
+//    }
+//
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        if (requestCode == CREATE_NEW_TASK && resultCode == Activity.RESULT_OK) updateList()
+//    }
+//
+//    private fun updateList() {
+//        val list = mainViewModel._allTasks
+//        //TaskDataSource.getList()
+//        binding.includeEmpty.emptyState.visibility = if (list.value?.isEmpty()!!) View.VISIBLE else View.GONE
+//
+//        adapterTaskListAdapter.submitList(mainViewModel.allTasks)
+//    }
 
-    private fun updateList() {
-        val list = TaskDataSource.getList()
-        binding.includeEmpty.emptyState.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
-
-        adapterTaskListAdapter.submitList(list)
-    }
-
-    companion object {
-        private const val CREATE_NEW_TASK = 1000
-    }
 
 }

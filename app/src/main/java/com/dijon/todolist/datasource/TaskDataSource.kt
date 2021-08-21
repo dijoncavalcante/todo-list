@@ -1,6 +1,6 @@
 package com.dijon.todolist.datasource
 
-import com.dijon.todolist.model.Task
+import com.dijon.todolist.model.data.Task
 
 object TaskDataSource {
     private val list = arrayListOf<Task>()
@@ -8,15 +8,15 @@ object TaskDataSource {
     fun getList() = list.toList()
 
     fun insertTask(task: Task) {
-        if (task.id == 0) {
-            list.add(task.copy(id = list.size + 1))
-        } else {
-            list.remove(task)
-            list.add(task)
-        }
+//        if (task.id == 0) {
+//            list.add(task.copy(id = list.size + 1))
+//        } else {
+//            list.remove(task)
+//            list.add(task)
+//        }
     }
 
-    fun findById(taskId: Int) = list.find { it.id == taskId }
+    //fun findById(taskId: Int) = list.find { it.id == taskId }
 
     fun deleteTask(task: Task) {
         list.remove(task)

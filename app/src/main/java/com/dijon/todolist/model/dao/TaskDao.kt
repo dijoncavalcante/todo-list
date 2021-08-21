@@ -20,5 +20,5 @@ interface TaskDao {
     fun getAll(): LiveData<List<Task>>
 
     @Query("SELECT * FROM table_task WHERE id = :key")
-    fun get(key: Long)
+    fun get(key: Long): Task
 }

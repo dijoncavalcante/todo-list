@@ -3,18 +3,21 @@ package com.dijon.todolist.ui
 import android.app.Activity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.dijon.todolist.AddTaskViewModel
 import com.dijon.todolist.databinding.ActivityAddTaskBinding
 import com.dijon.todolist.datasource.TaskDataSource
 import com.dijon.todolist.extensions.format
 import com.dijon.todolist.extensions.text
-import com.dijon.todolist.model.Task
+import com.dijon.todolist.model.data.Task
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
 class AddTaskActivity : AppCompatActivity() {
 
+    private val addTaskViewModel: AddTaskViewModel by viewModel()
     private lateinit var binding: ActivityAddTaskBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,12 +27,12 @@ class AddTaskActivity : AppCompatActivity() {
 
         if (intent.hasExtra(TASK_ID)) {
             val taskId = intent.getIntExtra(TASK_ID, 0)
-            TaskDataSource.findById(taskId)?.let {
-                binding.tilTitle.text = it.title
-                binding.tilDate.text = it.date
-                binding.tilHour.text = it.hour
-                binding.tilDescription.text = it.description
-            }
+//            TaskDataSource.findById(taskId)?.let {
+//                binding.tilTitle.text = it.title
+//                binding.tilDate.text = it.date
+//                binding.tilHour.text = it.hour
+//                binding.tilDescription.text = it.description
+//            }
         }
 
         insertListeners()
@@ -70,10 +73,8 @@ class AddTaskActivity : AppCompatActivity() {
                 description = binding.tilDescription.text,
                 date = binding.tilDate.text,
                 hour = binding.tilHour.text,
-                id = intent.getIntExtra(TASK_ID, 0)
             )
-            TaskDataSource.insertTask(task)
-            setResult(Activity.RESULT_OK)
+            addTaskViewModel.save(task)
             finish()
         }
     }
