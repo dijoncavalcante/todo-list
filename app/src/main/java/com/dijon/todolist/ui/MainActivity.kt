@@ -3,6 +3,7 @@ package com.dijon.todolist.ui
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.dijon.todolist.MainViewModel
 import com.dijon.todolist.databinding.ActivityMainBinding
@@ -29,6 +30,15 @@ class MainActivity : AppCompatActivity() {
                 loadingVisibility(false)
             }
         })
+
+        mainViewModel.allTasks.observe(this){
+            allTasks ->
+            val taskAdapter = TaskAdapter(allTasks).apply {
+                onItemClick = {
+                    Toast.makeText(this@MainActivity, "$it", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     private fun populateList(tasks: List<Task>) {
@@ -46,13 +56,12 @@ class MainActivity : AppCompatActivity() {
         binding.fabAddTask.setOnClickListener {
             startActivity(Intent(this@MainActivity, AddTaskActivity::class.java))
         }
+
+
+
     }
 
 //    private fun insertListeners() {
-//        binding.fabAddTask.setOnClickListener {
-//            startActivityForResult(Intent(this, AddTaskActivity::class.java), CREATE_NEW_TASK)
-//        }
-//
 //        adapterTaskListAdapter.listenerEdit = {
 //            val intent = Intent(this, AddTaskActivity::class.java)
 //            intent.putExtra(AddTaskActivity.TASK_ID, it.id)
@@ -62,19 +71,6 @@ class MainActivity : AppCompatActivity() {
 //            TaskDataSource.deleteTask(it)
 //            updateList()
 //        }
-//    }
-//
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        if (requestCode == CREATE_NEW_TASK && resultCode == Activity.RESULT_OK) updateList()
-//    }
-//
-//    private fun updateList() {
-//        val list = mainViewModel._allTasks
-//        //TaskDataSource.getList()
-//        binding.includeEmpty.emptyState.visibility = if (list.value?.isEmpty()!!) View.VISIBLE else View.GONE
-//
-//        adapterTaskListAdapter.submitList(mainViewModel.allTasks)
 //    }
 
 
