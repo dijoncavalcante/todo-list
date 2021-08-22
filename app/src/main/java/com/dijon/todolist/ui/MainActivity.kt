@@ -26,25 +26,24 @@ class MainActivity : AppCompatActivity() {
     private fun initObserver() {
         mainViewModel.allTasks.observe(this, { tasks ->
             if (tasks.isNotEmpty()) {
-                populateList(tasks)
+                val adapterTask = TaskAdapter(tasks).apply {
+                    listenerDelete = {
+                        callDelete(it)
+                    }
+                    listenerEdit = {
+                        callEdit(it)
+                    }
+                }
+                populateList(tasks, adapterTask)
                 loadingVisibility(false)
             }
         })
-
-        mainViewModel.allTasks.observe(this){
-            allTasks ->
-            val taskAdapter = TaskAdapter(allTasks).apply {
-                onItemClick = {
-                    Toast.makeText(this@MainActivity, "$it", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
     }
 
-    private fun populateList(tasks: List<Task>) {
+    private fun populateList(tasks: List<Task>, adapterTask: TaskAdapter) {
         binding.rvTasks.apply {
             hasFixedSize()
-            adapter = TaskAdapter(tasks)
+            adapter = adapterTask
         }
     }
 
@@ -56,22 +55,16 @@ class MainActivity : AppCompatActivity() {
         binding.fabAddTask.setOnClickListener {
             startActivity(Intent(this@MainActivity, AddTaskActivity::class.java))
         }
-
-
-
     }
 
-//    private fun insertListeners() {
-//        adapterTaskListAdapter.listenerEdit = {
-//            val intent = Intent(this, AddTaskActivity::class.java)
-//            intent.putExtra(AddTaskActivity.TASK_ID, it.id)
-//            startActivityForResult(intent, CREATE_NEW_TASK)
-//        }
-//        adapterTaskListAdapter.listenerDelete = {
-//            TaskDataSource.deleteTask(it)
-//            updateList()
-//        }
-//    }
+    private fun callEdit(task: Task) {
+        Toast.makeText(this@MainActivity, "${task.title}", Toast.LENGTH_SHORT).show()
+        val intent = Intent(this@MainActivity, AddTaskActivity::class.java)
+        intent.putExtra(AddTaskActivity.TASK_ID, task)
+        startActivity(intent)
+    }
 
-
+    private fun callDelete(task: Task) {
+        mainViewModel.delete(task)
+    }
 }

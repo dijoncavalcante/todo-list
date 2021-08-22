@@ -4,7 +4,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.PopupMenu
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.dijon.todolist.R
 import com.dijon.todolist.databinding.ItemTaskBinding
@@ -15,7 +14,8 @@ const val TAG = "TaskAdapter"
 class TaskAdapter(private val tasks: List<Task>) :
     RecyclerView.Adapter<TaskAdapter.TasksViewHolder>() {
 
-    var onItemClick: ((entity: Task) -> Unit)? = null
+    var listenerEdit: (Task) -> Unit = {}
+    var listenerDelete: (Task) -> Unit = {}
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TasksViewHolder {
         Log.d(TAG, "[onCreateViewHolder]")
@@ -46,16 +46,8 @@ class TaskAdapter(private val tasks: List<Task>) :
             popupMenu.menuInflater.inflate(R.menu.popup_menu, popupMenu.menu)
             popupMenu.setOnMenuItemClickListener {
                 when (it.itemId) {
-                    R.id.action_edit -> Toast.makeText(
-                        itemBinding.root.context,
-                        "TESTE EDIT",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    R.id.action_delete -> Toast.makeText(
-                        itemBinding.root.context,
-                        "TESTE DELETE",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    R.id.action_edit -> listenerEdit(task)
+                    R.id.action_delete -> listenerDelete(task)
                 }
                 return@setOnMenuItemClickListener true
             }

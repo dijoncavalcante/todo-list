@@ -3,6 +3,7 @@ package com.dijon.todolist.model.data
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
 @Entity(tableName = "table_task")
 data class Task(
@@ -16,4 +17,6 @@ data class Task(
     val hour: String,
     @ColumnInfo(name = "date")
     val date: String
-)
+) : Serializable {
+
+}

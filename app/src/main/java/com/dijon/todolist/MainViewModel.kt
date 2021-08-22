@@ -1,7 +1,6 @@
 package com.dijon.todolist
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dijon.todolist.model.data.Task
@@ -14,10 +13,6 @@ class MainViewModel(
 
     val _allTasks: LiveData<List<Task>> = taskRepository.tasks
     val allTasks: LiveData<List<Task>> get() = _allTasks
-//
-//   fun getTasks() = viewModelScope.launch {
-//        _allTasks.postValue(taskRepository.tasks)
-//    }
 
     fun save(task: Task) {
         viewModelScope.launch {
@@ -25,9 +20,9 @@ class MainViewModel(
         }
     }
 
-//    fun init() {
-//        _allTasks.postValue(taskRepository.tasks)
-//    }
-
-
+    fun delete(task: Task) {
+        viewModelScope.launch {
+            taskRepository.delete(task)
+        }
+    }
 }

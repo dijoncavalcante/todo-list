@@ -9,7 +9,6 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val viewModelModule = module {
-//    viewModel { (taskRepository: TaskRepository) -> MainViewModel(taskRepository) }
     viewModel { MainViewModel(get()) }
     viewModel { AddTaskViewModel(get()) }
 }

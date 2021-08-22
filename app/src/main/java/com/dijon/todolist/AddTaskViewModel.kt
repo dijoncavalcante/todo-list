@@ -12,13 +12,8 @@ class AddTaskViewModel(
     private val taskRepository: TaskRepository
 ) : ViewModel() {
 
-
-    val _allTasks = MutableLiveData<List<Task>>()// = taskRepository.tasks
+    val _allTasks = MutableLiveData<List<Task>>()
     val allTasks: LiveData<List<Task>> get() = _allTasks
-//
-//   fun getTasks() = viewModelScope.launch {
-//        _allTasks.postValue(taskRepository.tasks)
-//    }
 
     fun save(task: Task) {
         viewModelScope.launch {
@@ -39,12 +34,10 @@ class AddTaskViewModel(
     }
 
     fun addOrUpdateSubscriber(task: Task) {
-        if(task.id > 0){
+        if (task.id > 0) {
             update(task)
-        }else{
+        } else {
             save(task)
         }
     }
-
-
 }
