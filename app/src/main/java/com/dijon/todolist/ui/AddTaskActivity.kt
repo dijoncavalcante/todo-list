@@ -1,8 +1,10 @@
 package com.dijon.todolist.ui
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.dijon.todolist.AddTaskViewModel
+import com.dijon.todolist.R
 import com.dijon.todolist.databinding.ActivityAddTaskBinding
 import com.dijon.todolist.extensions.format
 import com.dijon.todolist.extensions.text
@@ -63,29 +65,54 @@ class AddTaskActivity : AppCompatActivity() {
         }
 
         bindingAddTask.btnCancelTask.setOnClickListener {
+            Log.d(TAG, "action cancel task ")
             finish()
         }
 
         bindingAddTask.btnNewTask.setOnClickListener {
-            val task = Task(
-                title = bindingAddTask.tilTitle.text,
-                description = bindingAddTask.tilDescription.text,
-                date = bindingAddTask.tilDate.text,
-                hour = bindingAddTask.tilHour.text,
-                id = if (_id > 0) _id else 0
-            )
+            if (validateFields()) {
+                val task = Task(
+                    title = bindingAddTask.tilTitle.text,
+                    description = bindingAddTask.tilDescription.text,
+                    date = bindingAddTask.tilDate.text,
+                    hour = bindingAddTask.tilHour.text,
+                    id = if (_id > 0) _id else 0
+                )
 
-            if (_id!! > 0L) {
-                addTaskViewModel.update(task)
-            } else {
-                addTaskViewModel.save(task)
+                if (_id!! > 0L) {
+                    addTaskViewModel.update(task)
+                } else {
+                    addTaskViewModel.save(task)
+                }
+                finish()
             }
-            finish()
         }
+    }
+
+    private fun validateFields(): Boolean {
+        var fieldOk = true
+        if (bindingAddTask.tilTitle.text.isEmpty()) {
+            bindingAddTask.tilTitle.error = getString(R.string.validate_title)
+            fieldOk = false
+        }
+        if (bindingAddTask.tilDescription.text.isEmpty()) {
+            bindingAddTask.tilDescription.error = getString(R.string.validate_description)
+            fieldOk = false
+        }
+        if (bindingAddTask.tilDate.text.isEmpty()) {
+            bindingAddTask.tilDate.error = getString(R.string.validate_date)
+            fieldOk = false
+        }
+        if (bindingAddTask.tilHour.text.isEmpty()) {
+            bindingAddTask.tilHour.error = getString(R.string.validate_hour)
+            fieldOk = false
+        }
+        return fieldOk
     }
 
     companion object {
         const val TASK_ID = "task_id"
+        const val TAG = "AddTaskActivity"
     }
 }
 

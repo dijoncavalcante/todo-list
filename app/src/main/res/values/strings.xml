@@ -11,4 +11,8 @@
     <string name="delete_label">Deletar</string>
     <string name="you_dont_have_tasks">Ops!! Você não possui\n nenhuma tarefa.</string>
     <string name="descricao_label">Descrição</string>
+    <string name="validate_title">Informe o campo Título.</string>
+    <string name="validate_description">Informe o campo Descriço.</string>
+    <string name="validate_date">Informe o campo Data.</string>
+    <string name="validate_hour">Informe o campo Hora.</string>
 </resources>
