@@ -1,15 +1,14 @@
 package com.dijon.todolist.model.repository
 
-import androidx.lifecycle.LiveData
 import com.dijon.todolist.model.dao.TaskDao
 import com.dijon.todolist.model.data.Task
 
 class TaskRepository(private val taskDao: TaskDao) {
 
-    val tasks: LiveData<List<Task>>
-        get() = taskDao.getAll()
+    suspend fun getAll(): List<Task> =
+        taskDao.getAll()
 
-    suspend fun save(task: Task) {
+    suspend fun save(task: Task) {s
         taskDao.save(task)
     }
 
@@ -17,8 +16,8 @@ class TaskRepository(private val taskDao: TaskDao) {
         taskDao.update(task)
     }
 
-    suspend fun delete(task: Task) {
-        taskDao.remove(task)
+    suspend fun delete(id: Long) {
+        taskDao.remove(id)
     }
 
     fun get(task: Task): Task =

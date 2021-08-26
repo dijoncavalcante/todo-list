@@ -1,6 +1,5 @@
 package com.dijon.todolist.model.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.dijon.todolist.model.data.Task
 
@@ -10,14 +9,14 @@ interface TaskDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun save(task: Task)
 
-    @Delete
-    suspend fun remove(task: Task)
+    @Query("DELETE FROM table_task WHERE id = :id")
+    suspend fun remove(id: Long)
 
     @Update
     suspend fun update(task: Task)
 
     @Query("SELECT * FROM table_task")
-    fun getAll(): LiveData<List<Task>>
+    suspend fun getAll(): List<Task>
 
     @Query("SELECT * FROM table_task WHERE id = :key")
     fun get(key: Long): Task

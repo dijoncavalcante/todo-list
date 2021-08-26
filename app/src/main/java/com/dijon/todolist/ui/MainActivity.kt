@@ -26,23 +26,22 @@ class MainActivity : AppCompatActivity() {
     private fun initObserver() {
         mainViewModel.allTasks.observe(this, { tasks ->
             if (tasks.isNotEmpty()) {
-                val adapterTask = TaskAdapter(tasks).apply {
-                    listenerDelete = {
-                        callDelete(it)
-                    }
-                    listenerEdit = {
-                        callEdit(it)
-                    }
-                }
-                populateList(tasks, adapterTask)
                 loadingVisibility(false)
+                populateList(tasks)
+            } else {
+                loadingVisibility(true)
+                populateList(tasks)
             }
         })
     }
 
-    private fun populateList(tasks: List<Task>, adapterTask: TaskAdapter) {
-        binding.rvTasks.apply {
-            hasFixedSize()
+    private fun populateList(tasks: List<Task>) {
+        val adapterTask = TaskAdapter(tasks).apply {
+            listenerDelete = { callDelete(it) }
+            listenerEdit = { callEdit(it) }
+        }
+        with(binding.rvTasks) {
+            setHasFixedSize(true)
             adapter = adapterTask
         }
     }
@@ -65,6 +64,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun callDelete(task: Task) {
-        mainViewModel.delete(task)
+        mainViewModel.delete(task.id)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getAllTasks()
+    }
+
+    private fun getAllTasks() {
+        mainViewModel.getAllTasks()
     }
 }
