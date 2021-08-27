@@ -1,7 +1,6 @@
 # Layout
 
-<img src="screenshot/home.jpg" width="200"> <img src="screenshot/experience_screen1.jpg" width="200"> <img src="screenshot/experience_screen2.jpg" width="200"> <img src="screenshot/aboutme_screen.jpg" width="200">
-<img src="screenshot/degree_screen.jpg" width="200"> <img src="screenshot/findMe_screen.jpg" width="200">
+<img src="screenshot/list_all_tasks_to_do_list.jpg" width="200"> <img src="screenshot/edit_delete_task_to_do_list.jpg" width="200"> <img src="screenshot/create_tasks_to_do_list.jpg" width="200"> <img src="screenshot/empty_state_to_do_list.jpg" width="200">
 
 # Welcome TODO-list App
 This application was developed to be delivered as a final project for Bootcamp Santander Mobile, in partnership with DIO - Digital Innovation One.
