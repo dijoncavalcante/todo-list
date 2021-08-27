@@ -3,7 +3,6 @@ package com.dijon.todolist.ui
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.dijon.todolist.AddTaskViewModel
 import com.dijon.todolist.R
 import com.dijon.todolist.databinding.ActivityAddTaskBinding
 import com.dijon.todolist.extensions.format
@@ -25,6 +24,8 @@ class AddTaskActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         bindingAddTask = ActivityAddTaskBinding.inflate(layoutInflater)
         setContentView(bindingAddTask.root)
+        setSupportActionBar(bindingAddTask.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         if (intent.hasExtra(TASK_ID)) {
             _id = 0

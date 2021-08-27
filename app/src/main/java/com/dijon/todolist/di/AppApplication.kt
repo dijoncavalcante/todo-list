@@ -1,4 +1,4 @@
-package com.dijon.todolist
+package com.dijon.todolist.di
 
 import android.app.Application
 import com.dijon.todolist.di.daoModule

@@ -1,4 +1,4 @@
-package com.dijon.todolist
+package com.dijon.todolist.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

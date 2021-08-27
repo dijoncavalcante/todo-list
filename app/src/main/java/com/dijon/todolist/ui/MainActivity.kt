@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.dijon.todolist.MainViewModel
+import com.dijon.todolist.ui.MainViewModel
 import com.dijon.todolist.databinding.ActivityMainBinding
 import com.dijon.todolist.model.data.Task
 import org.koin.androidx.viewmodel.ext.android.viewModel

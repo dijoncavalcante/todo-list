@@ -1,7 +1,7 @@
 package com.dijon.todolist.di
 
-import com.dijon.todolist.AddTaskViewModel
-import com.dijon.todolist.MainViewModel
+import com.dijon.todolist.ui.AddTaskViewModel
+import com.dijon.todolist.ui.MainViewModel
 import com.dijon.todolist.model.database.TaskDataBase
 import com.dijon.todolist.model.repository.TaskRepository
 import org.koin.android.ext.koin.androidContext
